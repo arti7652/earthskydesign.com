@@ -3,6 +3,7 @@ import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, Tag, U
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
+import { CreateTaskButton } from '@/components/shared/create-task-button'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from '@/lib/site-config'
@@ -29,9 +30,12 @@ const variantShells = {
   'listing-showcase': 'bg-[linear-gradient(180deg,#ffffff_0%,#f4f9ff_100%)]',
   'article-editorial': 'bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.08),transparent_20%),linear-gradient(180deg,#fff8ef_0%,#ffffff_100%)]',
   'article-journal': 'bg-[linear-gradient(180deg,#fffdf9_0%,#f7f1ea_100%)]',
-  'image-masonry': 'bg-[linear-gradient(180deg,#09101d_0%,#111c2f_100%)] text-white',
-  'image-portfolio': 'bg-[linear-gradient(180deg,#07111f_0%,#13203a_100%)] text-white',
-  'profile-creator': 'bg-[linear-gradient(180deg,#0a1120_0%,#101c34_100%)] text-white',
+  'image-masonry':
+    'bg-[radial-gradient(circle_at_18%_12%,rgba(255,200,160,0.4),transparent_42%),linear-gradient(180deg,#fff7f1_0%,#ffdccc_52%,#ffe8dc_100%)] text-[#1a0f0c]',
+  'image-portfolio':
+    'bg-[linear-gradient(135deg,#fff2e8_0%,#ffcbb5_48%,#fff6f0_100%)] text-[#1a0f0c]',
+  'profile-creator':
+    'bg-[radial-gradient(circle_at_82%_12%,rgba(255,200,160,0.45),transparent_44%),linear-gradient(180deg,#fff7f1_0%,#ffdccc_52%,#ffe8dc_100%)] text-[#1a0f0c]',
   'profile-business': 'bg-[linear-gradient(180deg,#f6fbff_0%,#ffffff_100%)]',
   'classified-bulletin': 'bg-[linear-gradient(180deg,#edf3e4_0%,#ffffff_100%)]',
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
@@ -60,30 +64,39 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   const shellClass = variantShells[layoutKey as keyof typeof variantShells] || 'bg-background'
   const Icon = taskIcons[task] || LayoutGrid
 
-  const isDark = ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
-  const ui = isDark
+  const isImageLane = layoutKey === 'image-masonry' || layoutKey === 'image-portfolio'
+  const isProfileLane = layoutKey === 'profile-creator'
+  const ui = isImageLane
     ? {
-        muted: 'text-slate-300',
-        panel: 'border border-white/10 bg-white/6',
-        soft: 'border border-white/10 bg-white/5',
-        input: 'border-white/10 bg-white/6 text-white',
-        button: 'bg-white text-slate-950 hover:bg-slate-200',
+        muted: 'text-[#4a3229]/90',
+        panel: 'border border-black/10 bg-white/75 shadow-[0_24px_70px_rgba(60,24,16,0.1)] backdrop-blur-sm',
+        soft: 'border border-black/8 bg-white/55 backdrop-blur-sm',
+        input: 'border border-black/12 bg-white text-[#1a0f0c]',
+        button: 'bg-[#140c0a] text-[#fff5ef] hover:bg-[#2a1814]',
       }
-    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+    : isProfileLane
       ? {
-          muted: 'text-[#72594a]',
-          panel: 'border border-[#dbc6b6] bg-white/90',
-          soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
-          input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
-          button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          muted: 'text-[#4a3229]/90',
+          panel: 'border border-black/10 bg-white/75 shadow-[0_24px_70px_rgba(60,24,16,0.1)] backdrop-blur-sm',
+          soft: 'border border-black/8 bg-white/55 backdrop-blur-sm',
+          input: 'border border-black/12 bg-white text-[#1a0f0c]',
+          button: 'bg-[#140c0a] text-[#fff5ef] hover:bg-[#2a1814]',
         }
-      : {
-          muted: 'text-slate-600',
-          panel: 'border border-slate-200 bg-white',
-          soft: 'border border-slate-200 bg-slate-50',
-          input: 'border border-slate-200 bg-white text-slate-950',
-          button: 'bg-slate-950 text-white hover:bg-slate-800',
-        }
+      : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+        ? {
+            muted: 'text-[#72594a]',
+            panel: 'border border-[#dbc6b6] bg-white/90',
+            soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
+            input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
+            button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          }
+        : {
+            muted: 'text-slate-600',
+            panel: 'border border-slate-200 bg-white',
+            soft: 'border border-slate-200 bg-slate-50',
+            input: 'border border-slate-200 bg-white text-slate-950',
+            button: 'bg-slate-950 text-white hover:bg-slate-800',
+          }
 
   return (
     <div className={`min-h-screen ${shellClass}`}>
@@ -170,31 +183,61 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'image-masonry' || layoutKey === 'image-portfolio' ? (
-          <section className="mb-12 grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-            <div>
-              <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${ui.soft}`}>
-                <Icon className="h-3.5 w-3.5" /> Visual feed
+          <section className="mb-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-stretch">
+            <div className="flex flex-col justify-center">
+              <div className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] ${ui.soft}`}>
+                <Icon className="h-3.5 w-3.5" /> Gallery lane
               </div>
-              <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em]">{taskConfig?.description || 'Latest posts'}</h1>
-              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This surface leans into stronger imagery, larger modules, and more expressive spacing so visual content feels materially different from reading and directory pages.</p>
+              <h1 className="mt-6 text-5xl font-semibold tracking-[-0.06em]">{taskConfig?.description || 'Latest posts'}</h1>
+              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                Masonry rhythm tuned for portraits and campaign drops—large tiles, soft glass frames, and metadata that stays out of the way until you need it.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <CreateTaskButton taskKey="image" label="Gallery" />
+                <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.button}`}>
+                  Meet creators
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/search" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.soft}`}>
+                  Search posts
+                </Link>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className={`min-h-[220px] rounded-[2rem] ${ui.panel}`} />
-              <div className={`min-h-[220px] rounded-[2rem] ${ui.soft}`} />
-              <div className={`col-span-2 min-h-[120px] rounded-[2rem] ${ui.panel}`} />
+            <div className="grid grid-cols-6 grid-rows-4 gap-3">
+              <div className={`col-span-4 row-span-3 rounded-[2rem] ${ui.panel}`} />
+              <div className={`col-span-2 row-span-2 rounded-[1.75rem] ${ui.soft}`} />
+              <div className={`col-span-2 row-span-2 rounded-[1.75rem] ${ui.panel}`} />
+              <div className={`col-span-6 row-span-1 rounded-[1.75rem] ${ui.soft}`} />
             </div>
           </section>
         ) : null}
 
         {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
-          <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
-            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
-              <div>
-                <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles with stronger identity, trust, and reputation cues.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.</p>
+          <section className="mb-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-stretch">
+            <div className="flex flex-col justify-center">
+              <div className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] ${ui.soft}`}>
+                <Icon className="h-3.5 w-3.5" /> Profile lane
               </div>
+              <h1 className="mt-6 text-5xl font-semibold tracking-[-0.06em]">Social profiles, presence, and public identity.</h1>
+              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                Creator dossiers tuned for bios, avatars, and the story behind each visual post—calm identity surfaces with room to breathe.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <CreateTaskButton taskKey="profile" label="Social Profiles" />
+                <Link href="/images" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.button}`}>
+                  Browse gallery
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/search" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.soft}`}>
+                  Find people
+                </Link>
+              </div>
+            </div>
+            <div className="grid grid-cols-6 grid-rows-4 gap-3">
+              <div className={`col-span-2 row-span-2 rounded-[1.75rem] ${ui.soft}`} />
+              <div className={`col-span-4 row-span-3 rounded-[2rem] ${ui.panel}`} />
+              <div className={`col-span-2 row-span-2 rounded-[1.75rem] ${ui.panel}`} />
+              <div className={`col-span-6 row-span-1 rounded-[1.75rem] ${ui.soft}`} />
             </div>
           </section>
         ) : null}

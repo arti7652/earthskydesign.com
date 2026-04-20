@@ -27,11 +27,12 @@ function getTone(kind: ReturnType<typeof getProductKind>) {
   }
   if (kind === 'visual') {
     return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      soft: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
+      shell:
+        'bg-[radial-gradient(ellipse_100%_80%_at_50%_-5%,rgba(255,210,175,0.55),transparent_58%),linear-gradient(168deg,#fff3e8_0%,#ffd4bc_48%,#ffe2cf_100%)] text-[#1a0f0c]',
+      panel: 'border border-black/10 bg-white/75 shadow-[0_24px_70px_rgba(60,24,16,0.1)] backdrop-blur-sm',
+      soft: 'border border-black/8 bg-white/55 backdrop-blur-sm',
+      muted: 'text-[#4a3229]/90',
+      action: 'bg-[#140c0a] text-[#fff5ef] shadow-[0_12px_40px_rgba(20,12,10,0.3)] hover:bg-[#2a1814]',
     }
   }
   return {
@@ -99,10 +100,10 @@ export default function ContactPage() {
           <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
             <h2 className="text-2xl font-semibold">Send a message</h2>
             <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Your name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What do you need help with?" />
-              <textarea className="min-h-[180px] rounded-2xl border border-current/10 bg-transparent px-4 py-3 text-sm" placeholder="Share the full context so we can respond with the right next step." />
+              <input className="h-12 rounded-xl border border-current/15 bg-white/80 px-4 text-sm text-foreground placeholder:text-muted-foreground" placeholder="Your name" />
+              <input className="h-12 rounded-xl border border-current/15 bg-white/80 px-4 text-sm text-foreground placeholder:text-muted-foreground" placeholder="Email address" />
+              <input className="h-12 rounded-xl border border-current/15 bg-white/80 px-4 text-sm text-foreground placeholder:text-muted-foreground" placeholder="What do you need help with?" />
+              <textarea className="min-h-[180px] rounded-2xl border border-current/15 bg-white/80 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground" placeholder="Share the full context so we can respond with the right next step." />
               <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${tone.action}`}>Send message</button>
             </form>
           </div>

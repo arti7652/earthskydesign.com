@@ -76,7 +76,7 @@ export default async function SearchPage({
       description={
         query
           ? `Results for "${query}"`
-          : "Browse the latest posts across every task."
+          : "Search visuals, profiles, and posts across the network."
       }
       actions={
         <form action="/search" className="flex w-full gap-2 sm:w-auto">
@@ -88,7 +88,7 @@ export default async function SearchPage({
             <Input
               name="q"
               defaultValue={query}
-              placeholder="Search across tasks..."
+              placeholder="Search visuals, profiles, posts…"
               className="h-11 pl-9"
             />
           </div>

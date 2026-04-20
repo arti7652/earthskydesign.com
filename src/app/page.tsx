@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bookmark, Building2, Compass, FileText, Globe2, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Tag, User } from 'lucide-react'
+import { ArrowRight, Bookmark, Building2, Compass, FileText, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Sparkles, Tag, User } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -11,7 +11,7 @@ import { buildPageMetadata } from '@/lib/seo'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { siteContent } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
-import { getProductKind, type ProductKind } from '@/design/factory/get-product-kind'
+import { getProductKind } from '@/design/factory/get-product-kind'
 import type { SitePost } from '@/lib/site-connector'
 import { HOME_PAGE_OVERRIDE_ENABLED, HomePageOverride } from '@/overrides/home-page'
 
@@ -114,14 +114,18 @@ function getEditorialTone() {
 
 function getVisualTone() {
   return {
-    shell: 'bg-[#07101f] text-white',
-    panel: 'border border-white/10 bg-[rgba(11,18,31,0.78)] shadow-[0_28px_80px_rgba(0,0,0,0.35)]',
-    soft: 'border border-white/10 bg-white/6',
-    muted: 'text-slate-300',
-    title: 'text-white',
-    badge: 'bg-[#8df0c8] text-[#07111f]',
-    action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
-    actionAlt: 'border border-white/10 bg-white/6 text-white hover:bg-white/10',
+    shell: 'text-[#1a0f0c]',
+    hero: 'relative overflow-hidden bg-[radial-gradient(ellipse_100%_80%_at_50%_-5%,rgba(255,210,175,0.65),transparent_58%),linear-gradient(168deg,#fff3e8_0%,#ffd4bc_42%,#e85d2c_100%)]',
+    grid: 'pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.35)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.28)_1px,transparent_1px)] bg-[size:64px_64px] opacity-[0.45]',
+    vignette: 'pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0)_0%,rgba(40,12,8,0.12)_100%)]',
+    panel: 'border border-black/10 bg-white/55 shadow-[0_28px_80px_rgba(60,20,10,0.18)] backdrop-blur-md',
+    soft: 'border border-black/8 bg-white/40 backdrop-blur-sm',
+    muted: 'text-[#4a3229]/90',
+    title: 'text-[#140c0a]',
+    badge: 'border border-black/10 bg-black text-[#fff5ef]',
+    action: 'bg-[#140c0a] text-[#fff5ef] shadow-[0_12px_40px_rgba(20,12,10,0.35)] hover:bg-[#2a1814]',
+    actionAlt: 'border border-black/15 bg-white/70 text-[#140c0a] hover:bg-white',
+    pill: 'border border-white/40 bg-white/25 text-[#1a100d] backdrop-blur-md',
   }
 }
 
@@ -345,63 +349,99 @@ function EditorialHome({ primaryTask, articlePosts, supportTasks }: { primaryTas
 
 function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { primaryTask?: EnabledTask; imagePosts: SitePost[]; profilePosts: SitePost[]; articlePosts: SitePost[] }) {
   const tone = getVisualTone()
-  const gallery = imagePosts.length ? imagePosts.slice(0, 5) : articlePosts.slice(0, 5)
-  const creators = profilePosts.slice(0, 3)
+  const fromFeed = imagePosts.length ? imagePosts : articlePosts
+  const slots = Array.from({ length: 5 }, (_, i) => fromFeed[i] || null)
+  const creators = profilePosts.slice(0, 4)
+  const rotations = ['-14deg', '-7deg', '0deg', '7deg', '14deg']
 
   return (
     <main className={tone.shell}>
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${tone.badge}`}>
-              <ImageIcon className="h-3.5 w-3.5" />
-              Visual publishing system
-            </span>
-            <h1 className={`mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${tone.title}`}>
-              Image-led discovery with creator profiles and a more gallery-like browsing rhythm.
-            </h1>
-            <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>{SITE_CONFIG.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={primaryTask?.route || '/images'} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
-                Open gallery
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Meet creators
-              </Link>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {gallery.slice(0, 5).map((post, index) => (
-              <Link
-                key={post.id}
-                href={getTaskHref(resolveTaskKey(post.task, 'image'), post.slug)}
-                className={index === 0 ? `col-span-2 row-span-2 overflow-hidden rounded-[2.4rem] ${tone.panel}` : `overflow-hidden rounded-[1.8rem] ${tone.soft}`}
-              >
-                <div className={index === 0 ? 'relative h-[360px]' : 'relative h-[170px]'}>
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-              </Link>
-            ))}
+      <section className={`${tone.hero} pb-20 pt-6 sm:pb-28 sm:pt-10`}>
+        <div className={tone.grid} aria-hidden />
+        <div className={tone.vignette} aria-hidden />
+        <div className="relative mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+          <span className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] ${tone.badge}`}>
+            <ImageIcon className="h-3.5 w-3.5" />
+            {siteContent.hero.badge}
+          </span>
+          <h1 className={`mx-auto mt-7 max-w-4xl text-balance text-5xl font-semibold tracking-[-0.07em] sm:text-6xl lg:text-7xl ${tone.title}`}>
+            Perfect visuals for a social profile—publish portraits, drops, and identity in one flow.
+          </h1>
+          <p className={`mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg ${tone.muted}`}>{SITE_CONFIG.description}</p>
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href={primaryTask?.route || '/images'}
+              className={`inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 ${tone.action}`}
+            >
+              <Sparkles className="h-4 w-4" />
+              Generate
+            </Link>
+            <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold ${tone.actionAlt}`}>
+              Open profiles
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Visual notes</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Larger media surfaces, fewer boxes, stronger pacing.</h2>
-            <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>This product avoids business-directory density and publication framing. The homepage behaves more like a visual board, with profile surfaces and imagery leading the experience.</p>
+        <div className="relative mx-auto mt-14 flex max-w-5xl justify-center px-2 [perspective:1400px] sm:mt-16">
+          <div className="flex w-full max-w-4xl items-end justify-center gap-2 sm:gap-3 md:gap-4">
+            {slots.map((post, index) => {
+              const href = post ? getTaskHref(resolveTaskKey(post.task, 'image'), post.slug) : '/images'
+              const src = post ? getPostImage(post) : '/placeholder.svg?height=900&width=1400'
+              const title = post?.title || 'Your next visual'
+              return (
+                <Link
+                  key={post?.id || `placeholder-${index}`}
+                  href={href}
+                  className="group relative w-[18%] min-w-[68px] max-w-[160px] origin-bottom transition-transform duration-300 hover:z-10 hover:-translate-y-1 sm:max-w-[200px]"
+                  style={{ transform: `rotateY(${rotations[index]}) translateZ(0)` }}
+                >
+                  <div className={`relative aspect-[3/5] overflow-hidden rounded-2xl border border-white/50 shadow-[0_24px_60px_rgba(40,16,10,0.28)] sm:rounded-3xl ${tone.panel}`}>
+                    <ContentImage src={src} alt={title} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                    <div className="absolute inset-x-3 bottom-3 flex justify-center">
+                      <span className="rounded-full border border-white/50 bg-white/75 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1a0f0c] shadow-sm backdrop-blur-md sm:text-[11px]">
+                        Try now
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {creators.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-40 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Creator profile and visual identity surface.'}</p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+          <div className={`rounded-[2rem] p-8 ${tone.panel}`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#5c4035]">Why Earthskydesign</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[#140c0a] sm:text-4xl">Gallery-first discovery with profile depth—not a repurposed blog shell.</h2>
+            <p className={`mt-5 max-w-xl text-sm leading-8 ${tone.muted}`}>
+              Built for image-led posts and public social profiles: bold hero rhythm, fanned previews, and creator cards that feel intentional on every breakpoint.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/search" className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${tone.pill}`}>
+                Search the network
+                <ArrowRight className="h-4 w-4" />
               </Link>
-            ))}
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {creators.length ? (
+              creators.map((post) => (
+                <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.75rem] p-5 transition-transform duration-200 hover:-translate-y-0.5 ${tone.soft}`}>
+                  <div className="relative h-44 overflow-hidden rounded-2xl border border-black/5">
+                    <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-[#140c0a]">{post.title}</h3>
+                  <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Public profile, presence, and visual identity.'}</p>
+                </Link>
+              ))
+            ) : (
+              <div className={`col-span-2 rounded-[1.75rem] border border-dashed border-black/15 bg-white/50 p-10 text-center text-sm ${tone.muted}`}>
+                Creator profiles will appear here as they publish.
+              </div>
+            )}
           </div>
         </div>
       </section>
