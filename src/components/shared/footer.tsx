@@ -36,6 +36,9 @@ const footerLinks = {
     { name: 'Community', href: '/community' },
     { name: 'Developers', href: '/developers' },
     { name: 'Status', href: '/status' },
+    { name: 'Contact', href: '/contact' },
+    { name: 'About', href: '/about' },
+
   ],
   legal: [
     { name: 'Privacy', href: '/privacy' },
@@ -82,22 +85,22 @@ export function Footer() {
 
   if (recipe.footer === 'dense-footer') {
     return (
-      <footer className="border-t border-white/10 bg-[linear-gradient(180deg,#07111f_0%,#0b1a2e_100%)] text-white">
+      <footer className="border-t border-black/10 bg-[radial-gradient(circle_at_18%_12%,rgba(255,200,160,0.4),transparent_42%),linear-gradient(180deg,#fff7f1_0%,#ffdccc_52%,#ffe8dc_100%)] text-[#1a0f0c]">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_1fr]">
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
+            <div className="rounded-[2rem] border border-black/10 bg-white/70 p-7 shadow-[0_24px_70px_rgba(60,24,16,0.08)] backdrop-blur-sm">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/12 bg-white/8 p-1.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-black/10 bg-white p-1.5">
                   <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
                 </div>
                 <div>
                   <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{siteContent.footer.tagline}</p>
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#8b6d5a]">{siteContent.footer.tagline}</p>
                 </div>
               </div>
-              <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">{SITE_CONFIG.description}</p>
+              <p className="mt-5 max-w-md text-sm leading-7 text-[#4a3229]/90">{SITE_CONFIG.description}</p>
               {primaryTask ? (
-                <Link href={primaryTask.route} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#8df0c8] px-4 py-2.5 text-sm font-semibold text-[#07111f] hover:bg-[#77dfb8]">
+                <Link href={primaryTask.route} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#140c0a] px-4 py-2.5 text-sm font-semibold text-[#fff5ef] shadow-[0_12px_30px_rgba(20,12,10,0.28)] hover:bg-[#2a1814]">
                   Explore {primaryTask.label}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -105,26 +108,26 @@ export function Footer() {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3">
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Surfaces</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-200">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Surfaces</h3>
+                <ul className="mt-4 space-y-3 text-sm text-[#4a3229]/90">
                   {footerLinks.platform.map((item: any) => (
-                    <li key={item.name}><Link href={item.href} className="flex items-center gap-2 hover:text-white">{item.icon ? <item.icon className="h-4 w-4" /> : null}{item.name}</Link></li>
+                    <li key={item.name}><Link href={item.href} className="flex items-center gap-2 hover:text-[#1a0f0c]">{item.icon ? <item.icon className="h-4 w-4" /> : null}{item.name}</Link></li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Resources</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-200">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Resources</h3>
+                <ul className="mt-4 space-y-3 text-sm text-[#4a3229]/90">
                   {footerLinks.resources.map((item) => (
-                    <li key={item.name}><Link href={item.href} className="hover:text-white">{item.name}</Link></li>
+                    <li key={item.name}><Link href={item.href} className="hover:text-[#1a0f0c]">{item.name}</Link></li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Connect</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Connect</h3>
                 <div className="mt-4 flex gap-3">
                   {socialLinks.map((item) => (
-                    <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/8 p-2.5 text-slate-200 hover:bg-white/12 hover:text-white">
+                    <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-black/10 bg-white/70 p-2.5 text-[#4a3229] hover:bg-white hover:text-[#1a0f0c]">
                       <item.icon className="h-4 w-4" />
                     </Link>
                   ))}
@@ -132,7 +135,7 @@ export function Footer() {
               </div>
             </div>
           </div>
-          <div className="mt-10 border-t border-white/10 pt-5 text-sm text-slate-400">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</div>
+          <div className="mt-10 border-t border-black/10 pt-5 text-sm text-[#72594a]">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</div>
         </div>
       </footer>
     )

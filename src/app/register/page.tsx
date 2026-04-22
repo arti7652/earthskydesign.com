@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
+import { RegisterForm } from '@/components/auth/register-form'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { REGISTER_PAGE_OVERRIDE_ENABLED, RegisterPageOverride } from '@/overrides/register-page'
@@ -33,14 +34,14 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
   }
   if (kind === 'visual') {
     return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      side: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
+      shell: 'bg-[radial-gradient(ellipse_100%_80%_at_50%_-5%,rgba(255,210,175,0.55),transparent_58%),linear-gradient(168deg,#fff3e8_0%,#ffd4bc_48%,#e85d2c_100%)] text-[#1a0f0c]',
+      panel: 'border border-black/10 bg-white/70 shadow-[0_24px_70px_rgba(60,20,10,0.12)] backdrop-blur-md',
+      side: 'border border-black/10 bg-white/45 shadow-[0_18px_50px_rgba(60,20,10,0.08)] backdrop-blur-md',
+      muted: 'text-[#4a3229]/90',
+      action: 'bg-[#140c0a] text-[#fff5ef] hover:bg-[#2a1814]',
       icon: ImageIcon,
-      title: 'Set up your creator profile',
-      body: 'Launch a visual-first account with gallery publishing, identity surfaces, and profile-led discovery.',
+      title: 'Create your Earthskydesign account',
+      body: 'Start publishing gallery posts and shaping your social profile—your session is saved locally on this device after sign-up.',
     }
   }
   return {
@@ -83,13 +84,7 @@ export default function RegisterPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Create account</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Full name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What are you creating or publishing?" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Create account</button>
-            </form>
+            <RegisterForm actionClassName={config.action} />
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <span>Already have an account?</span>
               <Link href="/login" className="inline-flex items-center gap-2 font-semibold hover:underline">

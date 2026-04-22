@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
+import { LoginForm } from '@/components/auth/login-form'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { LOGIN_PAGE_OVERRIDE_ENABLED, LoginPageOverride } from '@/overrides/login-page'
@@ -33,14 +34,15 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
   }
   if (kind === 'visual') {
     return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      side: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
+      shell:
+        'bg-[radial-gradient(ellipse_100%_80%_at_50%_-5%,rgba(255,210,175,0.55),transparent_58%),linear-gradient(168deg,#fff3e8_0%,#ffd4bc_48%,#ffe2cf_100%)] text-[#1a0f0c]',
+      panel: 'border border-black/10 bg-white/75 shadow-[0_24px_70px_rgba(60,20,10,0.12)] backdrop-blur-md',
+      side: 'border border-black/10 bg-white/50 shadow-[0_18px_50px_rgba(60,20,10,0.08)] backdrop-blur-md',
+      muted: 'text-[#4a3229]/90',
+      action: 'bg-[#140c0a] text-[#fff5ef] shadow-[0_12px_40px_rgba(20,12,10,0.3)] hover:bg-[#2a1814]',
       icon: ImageIcon,
-      title: 'Enter the creator workspace',
-      body: 'Open your visual feed, creator profile, and publishing tools without dropping into a generic admin shell.',
+      title: 'Sign in to your studio',
+      body: 'Access your gallery posts, social profile, and publishing tools—your session stays on this device for quick return visits.',
     }
   }
   return {
@@ -75,7 +77,7 @@ export default function LoginPage() {
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
             <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
             <div className="mt-8 grid gap-4">
-              {['Cleaner product-specific workflows', 'Palette and layout matched to the site family', 'Fewer repeated admin patterns'].map((item) => (
+              {['Gallery-first publishing rhythm', 'Profile surfaces tuned for creators', 'Lightweight session saved on this device'].map((item) => (
                 <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
               ))}
             </div>
@@ -83,11 +85,7 @@ export default function LoginPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Welcome back</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Sign in</button>
-            </form>
+            <LoginForm actionClassName={config.action} />
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <Link href="/forgot-password" className="hover:underline">Forgot password?</Link>
               <Link href="/register" className="inline-flex items-center gap-2 font-semibold hover:underline">
