@@ -10,6 +10,7 @@ import { useAuth } from '@/lib/auth-context'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { cn } from '@/lib/utils'
 import { siteContent } from '@/config/site.content'
+import { SITE_RECIPE } from '@/config/site.recipe'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { NAVBAR_OVERRIDE_ENABLED, NavbarOverride } from '@/overrides/navbar'
 
@@ -49,12 +50,12 @@ const variantClasses = {
     mobile: 'border-t border-[#dbc6b6] bg-[#fff7ee]',
   },
   'floating-bar': {
-    shell: 'border-b border-transparent bg-transparent text-white',
-    logo: 'rounded-[1.35rem] border border-white/12 bg-white/8 shadow-[0_16px_48px_rgba(15,23,42,0.22)] backdrop-blur',
-    active: 'bg-[#8df0c8] text-[#07111f]',
-    idle: 'text-slate-200 hover:bg-white/10 hover:text-white',
-    cta: 'rounded-full bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
-    mobile: 'border-t border-white/10 bg-[#09101d]/96',
+    shell: 'border-b border-black/5 bg-white/55 text-[#1a0f0c] shadow-[0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl',
+    logo: 'rounded-[1.35rem] border border-black/10 bg-white/85 shadow-[0_18px_50px_rgba(60,24,16,0.12)]',
+    active: 'bg-[#140c0a] text-[#fff5ef]',
+    idle: 'text-[#4a3229] hover:bg-black/5 hover:text-[#140c0a]',
+    cta: 'rounded-full bg-[#140c0a] text-[#fff5ef] shadow-[0_10px_30px_rgba(20,12,10,0.25)] hover:bg-[#2a1814]',
+    mobile: 'border-t border-black/10 bg-[#fff7f2]/98',
   },
   'utility-bar': {
     shell: 'border-b border-[#d7deca] bg-[#f4f6ef]/94 text-[#1f2617] backdrop-blur-xl',
@@ -97,7 +98,16 @@ export function Navbar() {
   const { isAuthenticated } = useAuth()
   const { recipe } = getFactoryState()
 
-  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile'), [])
+  const emphasizedKeys = SITE_RECIPE.enabledTasks?.length ? (SITE_RECIPE.enabledTasks as readonly string[]) : null
+  const navigation = useMemo(
+    () =>
+      SITE_CONFIG.tasks.filter((task) => {
+        if (!task.enabled) return false
+        if (emphasizedKeys) return emphasizedKeys.includes(task.key)
+        return task.key !== 'profile'
+      }),
+    [emphasizedKeys]
+  )
   const primaryNavigation = navigation.slice(0, 5)
   const mobileNavigation = navigation.map((task) => ({
     name: task.label,
@@ -233,7 +243,10 @@ export function Navbar() {
               <div className="h-px flex-1 bg-[#d8c8bb]" />
             </div>
           ) : isFloating ? (
-            <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
+            <div className="hidden min-w-0 flex-1 items-center justify-center gap-1 xl:flex">
+              <Link href="/" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname === '/' ? style.active : style.idle)}>
+                Home
+              </Link>
               {primaryNavigation.map((task) => {
                 const Icon = taskIcons[task.key] || LayoutGrid
                 const isActive = pathname.startsWith(task.route)
@@ -244,6 +257,12 @@ export function Navbar() {
                   </Link>
                 )
               })}
+              <Link href="/about" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname.startsWith('/about') ? style.active : style.idle)}>
+                About
+              </Link>
+              <Link href="/contact" className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', pathname.startsWith('/contact') ? style.active : style.idle)}>
+                Contact
+              </Link>
             </div>
           ) : isUtility ? (
             <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
@@ -273,7 +292,7 @@ export function Navbar() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {primaryTask && (recipe.navbar === 'utility-bar' || recipe.navbar === 'floating-bar') ? (
+          {primaryTask && recipe.navbar === 'utility-bar' ? (
             <Link href={primaryTask.route} className="hidden items-center gap-2 rounded-full border border-current/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] opacity-80 md:inline-flex">
               <Sparkles className="h-3.5 w-3.5" />
               {primaryTask.label}
@@ -306,15 +325,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      {isFloating && primaryTask ? (
-        <div className="mx-auto hidden max-w-7xl px-4 pb-3 sm:px-6 lg:block lg:px-8">
-          <Link href={primaryTask.route} className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200 backdrop-blur hover:bg-white/12">
-            Featured surface
-            <span>{primaryTask.label}</span>
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      ) : null}
+{null}
 
       {isMobileMenuOpen && (
         <div className={style.mobile}>
@@ -322,6 +333,9 @@ export function Navbar() {
             <Link href="/search" onClick={() => setIsMobileMenuOpen(false)} className="mb-3 flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold text-muted-foreground">
               <Search className="h-4 w-4" />
               Search the site
+            </Link>
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', pathname === '/' ? style.active : style.idle)}>
+              Home
             </Link>
             {mobileNavigation.map((item) => {
               const isActive = pathname.startsWith(item.href)
@@ -332,6 +346,12 @@ export function Navbar() {
                 </Link>
               )
             })}
+            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', pathname.startsWith('/about') ? style.active : style.idle)}>
+              About
+            </Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', pathname.startsWith('/contact') ? style.active : style.idle)}>
+              Contact
+            </Link>
           </div>
         </div>
       )}

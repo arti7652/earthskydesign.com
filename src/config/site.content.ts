@@ -2,25 +2,24 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'Image + Social Profile platform',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Image + Social Profile platform',
   },
   hero: {
-    badge: 'Latest stories and visuals',
+    badge: 'Image + social profile studio',
     title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+    description: 'Earthskydesign is an image-led social profile platform—publish visuals, shape your public identity, and browse creators without the noise of unrelated formats.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
-    },
-    secondaryCta: {
-      label: 'Explore visuals',
+      label: 'Open gallery',
       href: '/images',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    secondaryCta: {
+      label: 'Browse profiles',
+      href: '/profile',
+    },
+    searchPlaceholder: 'Search people, visuals, and posts',
     focusLabel: 'Focus',
     featureCardBadge: 'latest cover rotation',
     featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
@@ -29,49 +28,46 @@ export const siteContent = {
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
-      description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
-      openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+      title: 'Image gallery & social profiles',
+      description: 'Earthskydesign is an image-led social profile platform for publishing visuals and public creator identity.',
+      openGraphTitle: 'Earthskydesign — image gallery & social profiles',
+      openGraphDescription: 'Browse gallery posts, discover creators, and explore public profiles with a warm, media-first layout.',
+      keywords: ['image gallery', 'social profile', 'creator profiles', 'visual posts', 'Earthskydesign'],
     },
     introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introTitle: 'Built for visuals-first publishing and profile-led discovery.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'Earthskydesign centers imagery and public profiles so visitors can scan beautiful media, then understand the people behind the work.',
+      'The experience is tuned for portrait-led posts, cohesive identity surfaces, and fast browsing without generic template clutter.',
+      'Search and direct links still reach every supported format when you need them—this homepage simply spotlights what matters most here.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Warm studio hero with fanned previews and strong visual hierarchy.',
+      'Primary lanes for gallery posts and social profiles.',
+      'Lightweight motion, crisp typography, and mobile-friendly scanning.',
+      'Fast loads with CSS-first presentation details.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Open gallery',
+      href: '/images',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'View profiles',
+      href: '/profile',
     },
   },
   cta: {
     badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
-    description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+    title: 'Publish visuals and grow your public profile in one connected studio.',
+    description: 'Jump into the gallery, refine your profile presence, and keep discovery focused on imagery and identity.',
     primaryCta: {
-      label: 'Get Started Free',
-      href: '/register',
+      label: 'Explore visuals',
+      href: '/images',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'View profiles',
+      href: '/profile',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -81,31 +77,31 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    description: 'Long-form reading on Earthskydesign when publishing includes editorial lanes.',
   },
   listing: {
     title: 'Listings and discoverable pages',
-    description: 'Explore listings, services, brands, and structured pages organized for easier browsing.',
+    description: 'Structured listings when business discovery is enabled for this site.',
   },
   classified: {
     title: 'Classifieds and announcements',
-    description: 'Browse classifieds, offers, notices, and time-sensitive posts across categories.',
+    description: 'Short-form offers and notices when classified publishing is available.',
   },
   image: {
-    title: 'Images and visual posts',
-    description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
+    title: 'Gallery — portraits & visual posts',
+    description: 'Browse image-led posts, editorial sets, and visual stories on Earthskydesign.',
   },
   profile: {
-    title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    title: 'Social profiles & creator pages',
+    description: 'Explore public profiles, bios, and identity surfaces across Earthskydesign.',
   },
   sbm: {
     title: 'Curated links and saved resources',
-    description: 'Browse useful links, saved references, and curated resources organized for discovery.',
+    description: 'Bookmark-style collections when curation tasks are enabled.',
   },
   pdf: {
     title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    description: 'Document library surfaces when PDF tasks are enabled.',
   },
 }
 
@@ -153,29 +149,29 @@ export const taskIntroCopy: Record<
     ],
   },
   image: {
-    title: 'Image-led posts and visual stories',
+    title: 'Gallery posts, portraits, and visual-first stories',
     paragraphs: [
-      'Images take the lead in this section through galleries, visual posts, and story-led content where imagery carries the experience.',
-      'These posts connect with articles, listings, and other sections so visuals can act as entry points into deeper content.',
-      'Browse the latest visual updates, then continue into related stories or supporting pages for more context.',
+      'This lane is tuned for imagery that leads—portraits, editorial sets, campaign drops, and visual narratives with strong cover presence.',
+      'Cards favor large media, calm metadata, and quick jumps into the creators behind the work.',
+      'Use it as the front door for aesthetic discovery, then follow profiles when you want identity and context.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open classifieds', href: '/classifieds' },
+      { label: 'Social profiles', href: '/profile' },
+      { label: 'Search', href: '/search' },
+      { label: 'Home', href: '/' },
     ],
   },
   profile: {
-    title: 'Profiles, identities, and public pages',
+    title: 'Social profiles, presence, and public identity',
     paragraphs: [
-      'Profiles capture the identity behind a business, creator, brand, or project and help visitors understand who is behind the content they are exploring.',
-      'These pages work as trust anchors across the site and connect naturally with stories, listings, documents, and other post types.',
-      'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
+      'Profiles are the trust anchor for Earthskydesign—bios, avatars, highlights, and the story behind each visual post.',
+      'The layout reads more like a creator dossier than a business directory: identity first, supporting media second.',
+      'Jump into gallery posts from the same voices when you want deeper browsing without leaving the ecosystem.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse images', href: '/images' },
+      { label: 'Gallery', href: '/images' },
+      { label: 'Search people & posts', href: '/search' },
+      { label: 'Home', href: '/' },
     ],
   },
   sbm: {
